@@ -22,7 +22,7 @@ public interface AccountListMapper {
 
 
 
-//    @InheritInverseConfiguration
-//    Account acountListDTOToAccount(AccountListDTO accountListDTO);
+    @InheritInverseConfiguration
+    Account toAccount(AccountListDTO accountListDTO);
 }
 

@@ -15,8 +15,8 @@ public interface TransactionHistoryMapper {
 
 //    @Mapping(source = "qax", target = "baz")
 //    @Mapping(source = "baz", target = "qax")
-    TransactionHistoryDTO transactionHistoryToTransactionHistoryDTO(TransactionHistory transactionHistory);
+    TransactionHistoryDTO toTransactionHistoryDTO(TransactionHistory transactionHistory);
 
-//    @InheritInverseConfiguration
-//    TransactionHistory TransactionHistoryDTOToTransactionHistory(TransactionHistoryDTO transactionHistoryDTO);
+    @InheritInverseConfiguration
+    TransactionHistory toTransactionHistory(TransactionHistoryDTO transactionHistoryDTO);
 }
