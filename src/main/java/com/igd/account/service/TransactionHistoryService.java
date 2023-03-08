@@ -5,12 +5,11 @@ import com.igd.account.dto.AccountServiceResponse;
 import com.igd.account.entity.Account;
 import com.igd.account.entity.TransactionHistory;
 import com.igd.account.exception.AccountNotFoundException;
+import com.igd.account.exception.NoDataFoundException;
 import com.igd.account.mapper.TransactionHistoryMapper;
 import com.igd.account.repository.AccountRepository;
-import com.igd.account.repository.TransactionHistoryPagingRepository;
 import com.igd.account.repository.TransactionHistoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,19 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TransactionHistoryService {
 
-    @Autowired
-    private TransactionHistoryPagingRepository transactionHistoryPagingRepository;
-    @Autowired
-    private TransactionHistoryRepository transactionHistoryRepository;
-    @Autowired
-    private AccountRepository accountRepository;
+    private final TransactionHistoryRepository transactionHistoryRepository;
+    private final AccountRepository accountRepository;
 
 
     public AccountServiceResponse findAllPage(String accountNumber , Pageable pageable) {
@@ -40,8 +34,13 @@ public class TransactionHistoryService {
        if(Objects.isNull(account)){
           throw new AccountNotFoundException(accountNumber);
        }
-        Page<TransactionHistory> transactionHistories = Optional.ofNullable(transactionHistoryPagingRepository
-                .findAllById(account.getId(),pageable)).orElseThrow(() -> new AccountNotFoundException(accountNumber));
+        Page<TransactionHistory> transactionHistories =  transactionHistoryRepository
+                .findAllByAccountId(account.getId(),pageable);
+
+        if(transactionHistories.getContent().isEmpty()){
+            throw new NoDataFoundException();
+        }
+
 
         List<TransactionHistoryDTO> content= transactionHistories.stream()
                 .map(transactionHistory -> TransactionHistoryMapper.INSTANCE.toTransactionHistoryDTO(transactionHistory,account))

@@ -38,7 +38,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "No Accounts found");
+        body.put("message", "No Record found");
 
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }

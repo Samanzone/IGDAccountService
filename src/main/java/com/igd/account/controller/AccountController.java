@@ -35,33 +35,36 @@ public class AccountController {
     @Autowired
     private TransactionHistoryService transactionHistoryService;
 
-     @GetMapping(value = "/v{version}/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
-     @Operation(summary = "/v{version}/accounts", description = "List All Accounts")
+     @GetMapping(value = "/v1/user-id/{userId}/accounts", produces = MediaType.APPLICATION_JSON_VALUE)
+     @Operation(summary = "/v1/user-id/{userId}/accounts", description = "List All Accounts")
      @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successful"),
              @ApiResponse(responseCode = "500", description = "Internal server error"),
+             @ApiResponse(responseCode = "404", description = "Record not found"),
              @ApiResponse(responseCode = "1001", description = "Application specific error.") })
-     ResponseEntity<AccountServiceResponse> getAccount(@PathVariable final int version,
+     ResponseEntity<AccountServiceResponse> getAccountByUserId(@PathVariable final String userId,
                                                       @PageableDefault(page = 0, size = 20)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "accountNumber", direction = Sort.Direction.DESC),
                     @SortDefault(sort = "accountName", direction = Sort.Direction.ASC)
             })
             Pageable pageable) {
-        return new ResponseEntity<>(accountService.findAllPage(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.findAllPage(userId,pageable), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/v{version}/accounts/account-num/{accountNum}/transhistory", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "/v{version}/accounts/account-num/{accountNum}/transhistory", description = "Particular Account Transaction History")
+    @GetMapping(value = "/v1/accounts/account-num/{accountNum}/transhistory", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "/v1/accounts/account-num/{accountNum}/transhistory", description = "Particular Account Transaction History")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
+            @ApiResponse(responseCode = "404", description = "Record not found"),
             @ApiResponse(responseCode = "1001", description = "Application specific error.") })
-    AccountServiceResponse getAccountsByAccountNumber(@PathVariable final int version, @PathVariable final String accountNum,
+    ResponseEntity<AccountServiceResponse> getAccountsByAccountNumber(@PathVariable final String accountNum,
                                                       @PageableDefault(page = 0, size = 20)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "valueDate", direction = Sort.Direction.DESC)
             })
             Pageable pageable) {
-        return transactionHistoryService.findAllPage(accountNum,pageable);
+         return new ResponseEntity<>(transactionHistoryService.findAllPage(accountNum,pageable), HttpStatus.OK);
+
     }
 
 }

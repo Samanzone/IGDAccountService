@@ -3,9 +3,14 @@ package com.igd.account.service;
 import com.igd.account.dto.AccountListDTO;
 import com.igd.account.dto.AccountServiceResponse;
 import com.igd.account.entity.Account;
+import com.igd.account.entity.TransactionHistory;
+import com.igd.account.entity.User;
+import com.igd.account.exception.AccountNotFoundException;
 import com.igd.account.exception.NoDataFoundException;
+import com.igd.account.exception.UserNotExistException;
 import com.igd.account.mapper.AccountListMapper;
 import com.igd.account.repository.AccountRepository;
+import com.igd.account.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,20 +26,27 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AccountService {
 
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
 
 
-    public AccountServiceResponse findAllPage(Pageable pageable) {
+    public AccountServiceResponse findAllPage(String userId, Pageable pageable) {
 
-        Page<Account> accounts = accountRepository.findAllPage(pageable);
+        User user = userRepository.findByUserId(userId);
 
-        if (accounts.isEmpty()) {
+        if(Objects.isNull(user)){
+            throw new UserNotExistException(userId);
+        }
+
+        Page<Account> accounts = accountRepository.findAllByUserId(user.getId(),pageable);
+
+        if (accounts.getContent().isEmpty()) {
             throw new NoDataFoundException();
         }
         List<AccountListDTO> content= accounts.stream()
                 .map(account -> AccountListMapper.INSTANCE.toAccountListDTO(account))
                 .collect(Collectors.toList());
+
 
 
         return AccountServiceResponse.<AccountListDTO>builder()
@@ -48,7 +60,7 @@ public class AccountService {
     }
 
     @Transactional
-    public void saveAll(List<Account> accounts) throws Exception{
+    public void saveAll(List<Account> accounts) {
         accountRepository.saveAll(accounts);
     }
 

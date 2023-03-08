@@ -7,6 +7,7 @@ import com.igd.account.entity.TransactionType;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ValueMapping;
 import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
@@ -25,7 +26,12 @@ public interface TransactionHistoryMapper {
 //    @Mapping(source = "valueDate.format(DateTimeFormatter.ISO_DATE)", target = "valueDate")
     @Mapping(source = "account.accountNumber", target = "accountNumber")
     @Mapping(source = "account.accountName", target = "accountName")
-    @Mapping(source = "account.currencyType", target = "currencyType")
+    @ValueMapping(source = "account.currencyType", target = "currencyType")
+    @Mapping(source = "transactionHistory.valueDate", target = "valueDate", dateFormat = "dd.MM.yyyy")
+    @ValueMapping(source = "transactionHistory.transactionType", target = "transactionType")
+    @Mapping(source = "transactionHistory.amount", target = "creditAmount", numberFormat = "#.00")
+    @Mapping(source = "transactionHistory.amount", target = "debitAmount", numberFormat = "#.00")
+
     TransactionHistoryDTO toTransactionHistoryDTO(TransactionHistory transactionHistory, Account account);
 
 

@@ -22,6 +22,7 @@ public class Account  extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String accountNumber;
     private String accountName;
     @Enumerated(EnumType.STRING)
@@ -29,10 +30,15 @@ public class Account  extends AuditableEntity {
     private LocalDateTime balanceDate;
     @Enumerated(EnumType.STRING)
     private CurrencyType currencyType;
-    private Double openingAvailableBalance;
+    private BigDecimal openingAvailableBalance;
 
-    // Mapping to the Transaction Table
+    // Mapping to the Transaction History Table
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
     private Set<TransactionHistory> transactionHistory;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
+
 
 }

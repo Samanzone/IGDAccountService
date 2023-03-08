@@ -17,16 +17,10 @@ import java.util.Date;
 @Setter
 public class AccountListDTO {
 
-    @JsonProperty("accountNumber")
-    private String accountNumber;
-    @JsonProperty("accountName")
-    private String accountName;
-    @JsonProperty("accountType")
-    private String accountType;
-    @JsonProperty("balanceDate")
-    private String balanceDate;
-    @JsonProperty("accountNumber")
-    private String currencyType;
-    @JsonProperty("openingAvailableBalance")
-    private Double openingAvailableBalance;
+     private String accountNumber;
+     private String accountName;
+     private String accountType;
+     private String balanceDate;
+     private String currencyType;
+     private Double openingAvailableBalance;
 }

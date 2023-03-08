@@ -26,11 +26,7 @@ public class TransactionHistory  extends AuditableEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-//    private String accountNumber;
-//    private String accountName;
     private LocalDateTime valueDate;
-//    @Enumerated(EnumType.STRING)
-//    private CurrencyType currencyType;
     private BigDecimal amount;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;

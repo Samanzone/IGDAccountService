@@ -10,8 +10,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface AccountRepository extends CrudRepository<Account, Long> {
 
-    @Query("select c from Account c")
-    Page<Account> findAllPage(Pageable pageable);
+    @Query("select c from Account c where c.user.id=?1")
+    Page<Account> findAllByUserId(Long id,Pageable pageable);
 
     @Query("select c from Account c where c.accountNumber=?1")
     Account findByAccountNumber(String accountNumber);
