@@ -3,6 +3,7 @@ package com.igd.account.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.igd.account.entity.AccountType;
 import com.igd.account.entity.CurrencyType;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 import java.math.BigDecimal;

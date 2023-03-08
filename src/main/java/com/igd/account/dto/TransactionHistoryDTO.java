@@ -3,14 +3,16 @@ package com.igd.account.dto;
 import com.igd.account.entity.CurrencyType;
 import com.igd.account.entity.TransactionType;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;
 
-@NotEmpty
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class TransactionHistoryDTO {
@@ -18,10 +20,9 @@ public class TransactionHistoryDTO {
     private String accountNumber;
     private String accountName;
     private String valueDate;
-    private CurrencyType currencyType;
+    private String currencyType;
     private String creditAmount;
     private String debitAmount;
-    private TransactionType transactionType;
-
+    private String transactionType;
     private String transactionNarrative;
 }
