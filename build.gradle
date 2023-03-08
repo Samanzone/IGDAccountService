@@ -1,6 +1,7 @@
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.4'
+//	id 'org.springframework.boot' version '2.2.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.1.0'
 }
 
@@ -39,8 +40,14 @@ dependencies {
 //	implementation "io.springfox:springfox-swagger2:${springfoxVersion}"
 //	implementation "io.springfox:springfox-swagger-ui:${springfoxVersion}"
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.9.4'
+	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.4'
 
-
+//			<groupId>com.fasterxml.jackson.core</groupId>
+//    <artifactId>jackson-databind</artifactId>
+//	<version>2.9.4</version>
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 	annotationProcessor	"org.projectlombok:lombok:${lombokVersion}"
 	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"

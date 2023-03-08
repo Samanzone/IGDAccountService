@@ -35,16 +35,19 @@ public class AccountRunner implements CommandLineRunner {
        Stream<Account> accountStream = Stream.of(Account.builder()
                 .accountNumber("232323232").accountName("SG1122222").accountType(AccountType.SAVINGS)
                 .balanceDate(LocalDateTime.now().minusDays(10)).currencyType(CurrencyType.AUD)
-               .openingAvailableBalance(new BigDecimal("2222.22")).build());
+               .openingAvailableBalance(Double.valueOf(22.22)).build());
         accountService.saveAll(accountStream.collect(Collectors.toList()));
 
         log.info("Loading transactionHistory Details.....");
 
+        Account account = accountService.findByAccountNumber("232323232");
 
         Stream<TransactionHistory> transactionHistoryStream = Stream.of(TransactionHistory.builder()
-                .accountName("232323232").accountName("SG1122222").amount(new BigDecimal("2222.22"))
-                .currencyType(CurrencyType.AUD).transactionType(TransactionType.CREDIT).transactionNarrative("Test Narrative")
-                .valueDate(LocalDateTime.now().minusDays(10)).build());
+//                .accountName("232323232").accountName("SG1122222")
+                .amount(new BigDecimal("2222.22"))
+//                .currencyType(CurrencyType.AUD)
+                .transactionType(TransactionType.CREDIT).transactionNarrative("Test Narrative")
+                .valueDate(LocalDateTime.now().minusDays(10)).account(account).build());
         transactionHistoryService.saveAll(transactionHistoryStream.collect(Collectors.toList()));
 
         log.info("Data loading is done");

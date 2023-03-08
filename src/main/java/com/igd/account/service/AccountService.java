@@ -1,7 +1,7 @@
 package com.igd.account.service;
 
 import com.igd.account.dto.AccountListDTO;
-import com.igd.account.dto.AccountResponse;
+import com.igd.account.dto.AccountServiceResponse;
 import com.igd.account.entity.Account;
 import com.igd.account.exception.NoDataFoundException;
 import com.igd.account.mapper.AccountListMapper;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +25,7 @@ public class AccountService {
     private AccountRepository accountRepository;
 
 
-    public AccountResponse findAllPage(Pageable pageable) {
+    public AccountServiceResponse findAllPage(Pageable pageable) {
 
         Page<Account> accounts = accountRepository.findAllPage(pageable);
 
@@ -36,7 +37,7 @@ public class AccountService {
                 .collect(Collectors.toList());
 
 
-        return AccountResponse.builder()
+        return AccountServiceResponse.<AccountListDTO>builder()
                 .content(content)
                 .pageNo(accounts.getNumber())
                 .pageSize(accounts.getSize())
@@ -49,5 +50,17 @@ public class AccountService {
     @Transactional
     public void saveAll(List<Account> accounts) throws Exception{
         accountRepository.saveAll(accounts);
+    }
+
+    public  Account findById(Long id){
+       return accountRepository.findById(id).orElseThrow(()->new NoDataFoundException());
+    }
+
+    public  Account findByAccountNumber(String accountNumber){
+        Account account =accountRepository.findByAccountNumber(accountNumber);
+        if(Objects.isNull(account)){
+            throw new NoDataFoundException();
+        }
+        return account;
     }
 }

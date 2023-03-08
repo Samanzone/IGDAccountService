@@ -3,15 +3,16 @@ package com.igd.account.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.igd.account.entity.AccountType;
 import com.igd.account.entity.CurrencyType;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.Date;
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class AccountListDTO {
@@ -21,11 +22,11 @@ public class AccountListDTO {
     @JsonProperty("accountName")
     private String accountName;
     @JsonProperty("accountType")
-    private AccountType accountType;
+    private String accountType;
     @JsonProperty("balanceDate")
-    private Date balanceDate;
+    private String balanceDate;
     @JsonProperty("accountNumber")
-    private CurrencyType currencyType;
+    private String currencyType;
     @JsonProperty("openingAvailableBalance")
-    private String openingAvailableBalance;
+    private Double openingAvailableBalance;
 }

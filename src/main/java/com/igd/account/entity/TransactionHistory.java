@@ -1,12 +1,13 @@
 package com.igd.account.entity;
 
-import jakarta.persistence.*;
+
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
@@ -25,13 +26,18 @@ public class TransactionHistory  extends AuditableEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String accountNumber;
-    private String accountName;
+//    private String accountNumber;
+//    private String accountName;
     private LocalDateTime valueDate;
-    private CurrencyType currencyType;
+//    @Enumerated(EnumType.STRING)
+//    private CurrencyType currencyType;
     private BigDecimal amount;
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
     private String transactionNarrative;
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    Account account;
 
 
 }

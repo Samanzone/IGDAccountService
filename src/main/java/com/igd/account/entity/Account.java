@@ -14,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Entity
 @Table(name="Account")
 public class Account  extends AuditableEntity {
@@ -25,13 +24,15 @@ public class Account  extends AuditableEntity {
     private Long id;
     private String accountNumber;
     private String accountName;
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
     private LocalDateTime balanceDate;
+    @Enumerated(EnumType.STRING)
     private CurrencyType currencyType;
-    private BigDecimal openingAvailableBalance;
+    private Double openingAvailableBalance;
 
     // Mapping to the Transaction Table
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
     private Set<TransactionHistory> transactionHistory;
 
 }
