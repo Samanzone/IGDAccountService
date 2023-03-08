@@ -25,7 +25,7 @@ public class AccountListDTO {
     private String accountType;
     @JsonProperty("balanceDate")
     private String balanceDate;
-    @JsonProperty("accountNumber")
+    @JsonProperty("currencyType")
     private String currencyType;
     @JsonProperty("openingAvailableBalance")
     private Double openingAvailableBalance;
