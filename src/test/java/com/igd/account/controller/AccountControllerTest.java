@@ -58,12 +58,13 @@ public class AccountControllerTest {
     public void getAllAccounts() throws Exception {
 
         String userId = "Tom121";
+        PageRequest paginacao = PageRequest.of(0, 1);
 
-        when(accountService.findAllPage(eq(userId), (any())))
+        when(accountService.findAllPage(eq(userId),paginacao))
                 .thenReturn(getAccountServiceResponse());
 
 
-        mockMvc.perform(get("/api/v1/user-id/{userId}", userId)
+        mockMvc.perform(get("/api/v1/user-id/{userId}/accounts", userId)
                         .param("page", "0")
                         .param("size", "1")
                         .param("sort", "accountNumber,desc")
@@ -75,26 +76,27 @@ public class AccountControllerTest {
                 .andDo(print());
 
     }
-//    @Test
-//    public void getAccountsByAccountNumber() throws Exception {
-//
-//        String accountNum = "232323232";
-//
-//        when(transactionHistoryService.findAllPage(accountNum, (any())))
-//                .thenReturn(getTransactionHistoryServiceResponse());
-//
-//
-//        mockMvc.perform(get("/api/v1/accounts/account-num/{accountNum}/transhistory", accountNum)
-//                        .param("page", "0")
-//                        .param("size", "1")
-//                        .param("sort", "valueDate,asc"))
-//                .andExpect(status().isOk())
-////                .andExpect(content().string(containsString(
-////                        "{\"accountNumber\":\"232323232\",\"accountName\":\"SG1122222\",\"accountType\":\"SAVINGS\",\"balanceDate\":\"ssds\",\"currencyType\":\"AUD\",\"openingAvailableBalance\":2.2232322212E8}")))
-//
-//                .andDo(print());
-//
-//    }
+    @Test
+    public void getAccountsByAccountNumber() throws Exception {
+
+        String accountNum = "232323232";
+        PageRequest paginacao = PageRequest.of(0, 1);
+
+        when(transactionHistoryService.findAllPage(accountNum,paginacao))
+                .thenReturn(getTransactionHistoryServiceResponse());
+
+
+        mockMvc.perform(get("/api/v1/accounts/account-num/{accountNum}/transhistory", accountNum)
+                        .param("page", "0")
+                        .param("size", "1")
+                        .param("sort", "valueDate,asc"))
+                .andExpect(status().isOk())
+//                .andExpect(content().string(containsString(
+//                        "{\"accountNumber\":\"232323232\",\"accountName\":\"SG1122222\",\"accountType\":\"SAVINGS\",\"balanceDate\":\"ssds\",\"currencyType\":\"AUD\",\"openingAvailableBalance\":2.2232322212E8}")))
+
+                .andDo(print());
+
+    }
 
     private AccountListDTO getAccountListDTO() {
         return AccountListDTO.builder()
