@@ -14,7 +14,7 @@ public interface TransactionHistoryMapper {
     @Mapping(source = "account.accountNumber", target = "accountNumber")
     @Mapping(source = "account.accountName", target = "accountName")
     @ValueMapping(source = "account.currencyType", target = "currencyType")
-    @Mapping(source = "transactionHistory.valueDate", target = "valueDate", dateFormat = "dd.MM.yyyy")
+    @Mapping(source = "transactionHistory.valueDate", target = "valueDate", dateFormat = "MMM. dd yyyy")
     @ValueMapping(source = "transactionHistory.transactionType", target = "transactionType")
     @Mapping(expression = "java(getCredit(transactionHistory))", target = "creditAmount", numberFormat = "#.00")
     @Mapping(expression = "java(getDebit(transactionHistory))", target = "debitAmount" , numberFormat = "#.00")

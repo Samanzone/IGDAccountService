@@ -16,7 +16,7 @@ public interface AccountListMapper {
     @ValueMapping(source = "accountNumber", target = "accountNumber")
     @ValueMapping(source = "accountName", target = "accountName")
     @ValueMapping(source = "accountType", target = "accountType")
-    @Mapping(source = "balanceDate", target = "balanceDate", dateFormat = "dd.MM.yyyy")
+    @Mapping(source = "balanceDate", target = "balanceDate", dateFormat = "dd/MM/yyyy")
     @Mapping(source = "openingAvailableBalance", target = "openingAvailableBalance", numberFormat = "#.00")
     AccountListDTO toAccountListDTO(Account account);
 
