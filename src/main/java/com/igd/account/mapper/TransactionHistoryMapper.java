@@ -36,17 +36,4 @@ public interface TransactionHistoryMapper {
         }
     }
 
-//    default String resolveName(final User model) {
-//        return String.format("%s %s", model.firstName, model.lastName);
-//    }
-//    @AfterMapping
-//    default void debitCredit(@MappingTarget final TransactionHistoryDTO transactionHistoryDTO,
-//                             final TransactionHistory transactionHistory) {
-//       if( TransactionType.DEBIT.equals(transactionHistory.getTransactionType())){
-//           transactionHistoryDTO.setDebitAmount(transactionHistory.getAmount().doubleValue());
-//       }
-//        if( TransactionType.CREDIT.equals(transactionHistory.getTransactionType())){
-//            transactionHistoryDTO.setCreditAmount(transactionHistory.getAmount().doubleValue());
-//        }
-//    }
 }
