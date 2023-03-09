@@ -1,17 +1,11 @@
 package com.igd.account.entity;
 
 
-import lombok.*;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -20,20 +14,20 @@ import java.util.Date;
 @Builder
 @ToString
 @Entity
-@Table(name="TransactionHistory")
-public class TransactionHistory  extends AuditableEntity{
+@Table(name = "TransactionHistory")
+public class TransactionHistory extends AuditableEntity {
 
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    Account account;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     private LocalDateTime valueDate;
     private BigDecimal amount;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
     private String transactionNarrative;
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
-    Account account;
 
 
 }

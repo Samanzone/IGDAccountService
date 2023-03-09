@@ -5,8 +5,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Currency;
-import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -15,14 +13,16 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="Account")
-public class Account  extends AuditableEntity {
+@Table(name = "Account")
+public class Account extends AuditableEntity {
 
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    User user;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String accountNumber;
     private String accountName;
     @Enumerated(EnumType.STRING)
@@ -31,14 +31,9 @@ public class Account  extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     private CurrencyType currencyType;
     private BigDecimal openingAvailableBalance;
-
     // Mapping to the Transaction History Table
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private Set<TransactionHistory> transactionHistory;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    User user;
 
 
 }

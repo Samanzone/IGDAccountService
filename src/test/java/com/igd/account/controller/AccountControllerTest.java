@@ -98,7 +98,7 @@ public class AccountControllerTest {
                         .param("sort", "valueDate,asc"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(
-                        "{\"accountNumber\":\"232323232\",\"accountName\":\"SG1122222\",\"valueDate\":\"sdsds\",\"currencyType\":\"AUD\",\"creditAmount\":\"2222.22\",\"debitAmount\":\"222.44\",\"transactionType\":\"CREDIT\",\"transactionNarrative\":\"test\"}")))
+                        "{\"accountNumber\":\"232323232\",\"accountName\":\"SG1122222\",\"valueDate\":\"28.02.2023\",\"currencyType\":\"AUD\",\"creditAmount\":2222.22,\"debitAmount\":222.44,\"transactionType\":\"CREDIT\",\"transactionNarrative\":\"test\"}")))
 
                 .andDo(print());
 
@@ -128,7 +128,7 @@ public class AccountControllerTest {
     private TransactionHistoryDTO getTransactionHistoryDTO() {
         return TransactionHistoryDTO.builder()
                 .accountNumber("232323232").accountName("SG1122222").transactionType(TransactionType.CREDIT.name())
-                .valueDate("sdsds").creditAmount("2222.22").debitAmount("222.44").currencyType(CurrencyType.AUD.name())
+                .valueDate("28.02.2023").creditAmount(Double.valueOf("2222.22")).debitAmount(Double.valueOf("222.44")).currencyType(CurrencyType.AUD.name())
                 .transactionNarrative("test").build();
     }
 

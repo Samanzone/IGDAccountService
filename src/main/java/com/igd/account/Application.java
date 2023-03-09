@@ -8,15 +8,16 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-@EnableJpaAuditing(auditorAwareRef="auditorAware")
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class Application {
 
-	@Bean
-	public AuditorAware<String> auditorAware() {
-		return new SecurityAuditorAware();
-	}
-	public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Bean
+    public AuditorAware<String> auditorAware() {
+        return new SecurityAuditorAware();
+    }
 
 }

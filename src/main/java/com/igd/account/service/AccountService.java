@@ -3,16 +3,13 @@ package com.igd.account.service;
 import com.igd.account.dto.AccountListDTO;
 import com.igd.account.dto.AccountServiceResponse;
 import com.igd.account.entity.Account;
-import com.igd.account.entity.TransactionHistory;
 import com.igd.account.entity.User;
-import com.igd.account.exception.AccountNotFoundException;
 import com.igd.account.exception.NoDataFoundException;
 import com.igd.account.exception.UserNotExistException;
 import com.igd.account.mapper.AccountListMapper;
 import com.igd.account.repository.AccountRepository;
 import com.igd.account.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -34,19 +31,18 @@ public class AccountService {
 
         User user = userRepository.findByUserId(userId);
 
-        if(Objects.isNull(user)){
+        if (Objects.isNull(user)) {
             throw new UserNotExistException(userId);
         }
 
-        Page<Account> accounts = accountRepository.findAllByUserId(user.getId(),pageable);
+        Page<Account> accounts = accountRepository.findAllByUserId(user.getId(), pageable);
 
         if (accounts.getContent().isEmpty()) {
             throw new NoDataFoundException();
         }
-        List<AccountListDTO> content= accounts.stream()
+        List<AccountListDTO> content = accounts.stream()
                 .map(account -> AccountListMapper.INSTANCE.toAccountListDTO(account))
                 .collect(Collectors.toList());
-
 
 
         return AccountServiceResponse.<AccountListDTO>builder()
@@ -64,13 +60,13 @@ public class AccountService {
         accountRepository.saveAll(accounts);
     }
 
-    public  Account findById(Long id){
-       return accountRepository.findById(id).orElseThrow(()->new NoDataFoundException());
+    public Account findById(Long id) {
+        return accountRepository.findById(id).orElseThrow(() -> new NoDataFoundException());
     }
 
-    public  Account findByAccountNumber(String accountNumber){
-        Account account =accountRepository.findByAccountNumber(accountNumber);
-        if(Objects.isNull(account)){
+    public Account findByAccountNumber(String accountNumber) {
+        Account account = accountRepository.findByAccountNumber(accountNumber);
+        if (Objects.isNull(account)) {
             throw new NoDataFoundException();
         }
         return account;

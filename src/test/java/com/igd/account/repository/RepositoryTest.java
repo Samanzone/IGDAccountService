@@ -1,5 +1,7 @@
 package com.igd.account.repository;
 
+import com.igd.account.entity.Account;
+import com.igd.account.entity.TransactionHistory;
 import com.igd.account.entity.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,33 @@ public class RepositoryTest {
         Assertions.assertNull(user.getId());
         em.persist(user);
         Assertions.assertNotNull(user.getId());
+    }
+    @Test
+    void verifyBootstrappingByPersistingAccount() {
+        Account account  = new Account();
+        account.setAccountName("Tom");
+        account.setAccountNumber("Tom123");
+
+        Assertions.assertNull(account.getId());
+        em.persist(account);
+        Assertions.assertNotNull(account.getId());
+    }
+
+    @Test
+    void verifyBootstrappingByPersistingTransactionHistory() {
+        Account account  = new Account();
+        account.setAccountName("Tom");
+        account.setAccountNumber("Tom123");
+
+        em.persist(account);
+
+        TransactionHistory transactionHistory  = new TransactionHistory();
+        transactionHistory.setTransactionNarrative("test");
+        transactionHistory.setAccount(account);
+
+        Assertions.assertNull(transactionHistory.getId());
+        em.persist(transactionHistory);
+        Assertions.assertNotNull(transactionHistory.getId());
     }
 
 

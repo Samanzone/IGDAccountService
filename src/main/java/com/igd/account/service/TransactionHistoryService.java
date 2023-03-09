@@ -1,7 +1,7 @@
 package com.igd.account.service;
 
-import com.igd.account.dto.TransactionHistoryDTO;
 import com.igd.account.dto.AccountServiceResponse;
+import com.igd.account.dto.TransactionHistoryDTO;
 import com.igd.account.entity.Account;
 import com.igd.account.entity.TransactionHistory;
 import com.igd.account.exception.AccountNotFoundException;
@@ -27,23 +27,23 @@ public class TransactionHistoryService {
     private final AccountRepository accountRepository;
 
 
-    public AccountServiceResponse findAllPage(String accountNumber , Pageable pageable) {
+    public AccountServiceResponse findAllPage(String accountNumber, Pageable pageable) {
 
-       Account account = accountRepository.findByAccountNumber(accountNumber);
+        Account account = accountRepository.findByAccountNumber(accountNumber);
 
-       if(Objects.isNull(account)){
-          throw new AccountNotFoundException(accountNumber);
-       }
-        Page<TransactionHistory> transactionHistories =  transactionHistoryRepository
-                .findAllByAccountId(account.getId(),pageable);
+        if (Objects.isNull(account)) {
+            throw new AccountNotFoundException(accountNumber);
+        }
+        Page<TransactionHistory> transactionHistories = transactionHistoryRepository
+                .findAllByAccountId(account.getId(), pageable);
 
-        if(transactionHistories.getContent().isEmpty()){
+        if (transactionHistories.getContent().isEmpty()) {
             throw new NoDataFoundException();
         }
 
 
-        List<TransactionHistoryDTO> content= transactionHistories.stream()
-                .map(transactionHistory -> TransactionHistoryMapper.INSTANCE.toTransactionHistoryDTO(transactionHistory,account))
+        List<TransactionHistoryDTO> content = transactionHistories.stream()
+                .map(transactionHistory -> TransactionHistoryMapper.INSTANCE.toTransactionHistoryDTO(transactionHistory, account))
                 .collect(Collectors.toList());
 
 
@@ -58,7 +58,7 @@ public class TransactionHistoryService {
     }
 
     @Transactional
-    public void saveAll(List<TransactionHistory> transactionHistories){
+    public void saveAll(List<TransactionHistory> transactionHistories) {
         transactionHistoryRepository.saveAll(transactionHistories);
     }
 }

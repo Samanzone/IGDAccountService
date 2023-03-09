@@ -3,8 +3,6 @@ package com.igd.account.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -13,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="Account_User")
+@Table(name = "Account_User")
 public class User extends AuditableEntity {
 
 
@@ -22,7 +20,7 @@ public class User extends AuditableEntity {
     private Long id;
     private String userId;
     private String userName;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private Set<Account> accounts;
 
 }
