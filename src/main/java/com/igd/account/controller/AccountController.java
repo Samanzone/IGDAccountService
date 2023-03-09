@@ -41,14 +41,16 @@ public class AccountController {
              @ApiResponse(responseCode = "500", description = "Internal server error"),
              @ApiResponse(responseCode = "404", description = "Record not found"),
              @ApiResponse(responseCode = "1001", description = "Application specific error.") })
-     ResponseEntity<AccountServiceResponse> getAccountByUserId(@PathVariable final String userId,
+     AccountServiceResponse getAccountByUserId(@PathVariable final String userId,
                                                       @PageableDefault(page = 0, size = 20)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "accountNumber", direction = Sort.Direction.DESC),
                     @SortDefault(sort = "accountName", direction = Sort.Direction.ASC)
             })
             Pageable pageable) {
-        return new ResponseEntity<>(accountService.findAllPage(userId,pageable), HttpStatus.OK);
+
+
+        return accountService.findAllPage(userId,pageable);
     }
 
     @GetMapping(value = "/v1/accounts/account-num/{accountNum}/transhistory", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -57,13 +59,13 @@ public class AccountController {
             @ApiResponse(responseCode = "500", description = "Internal server error"),
             @ApiResponse(responseCode = "404", description = "Record not found"),
             @ApiResponse(responseCode = "1001", description = "Application specific error.") })
-    ResponseEntity<AccountServiceResponse> getAccountsByAccountNumber(@PathVariable final String accountNum,
+    AccountServiceResponse getAccountsByAccountNumber(@PathVariable final String accountNum,
                                                       @PageableDefault(page = 0, size = 20)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "valueDate", direction = Sort.Direction.DESC)
             })
             Pageable pageable) {
-         return new ResponseEntity<>(transactionHistoryService.findAllPage(accountNum,pageable), HttpStatus.OK);
+         return transactionHistoryService.findAllPage(accountNum,pageable);
 
     }
 

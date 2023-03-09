@@ -5,6 +5,7 @@ import com.igd.account.dto.AccountListDTO;
 import com.igd.account.dto.AccountServiceResponse;
 import com.igd.account.dto.TransactionHistoryDTO;
 import com.igd.account.entity.*;
+import com.igd.account.exception.UserNotExistException;
 import com.igd.account.mapper.AccountListMapper;
 import com.igd.account.service.AccountService;
 import com.igd.account.service.TransactionHistoryService;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,11 +38,12 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 public class AccountControllerTest {
 
@@ -58,9 +61,10 @@ public class AccountControllerTest {
     public void getAllAccounts() throws Exception {
 
         String userId = "Tom121";
-        PageRequest paginacao = PageRequest.of(0, 1);
+        PageRequest pageRequest = PageRequest.of(0, 1,
+                Sort.by("accountNumber").descending().and(Sort.by("accountName").ascending()));
 
-        when(accountService.findAllPage(eq(userId),paginacao))
+        when(accountService.findAllPage(userId,pageRequest))
                 .thenReturn(getAccountServiceResponse());
 
 
@@ -72,17 +76,19 @@ public class AccountControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(
                         "{\"accountNumber\":\"232323232\",\"accountName\":\"SG1122222\",\"accountType\":\"SAVINGS\",\"balanceDate\":\"ssds\",\"currencyType\":\"AUD\",\"openingAvailableBalance\":2.2232322212E8}")))
-
                 .andDo(print());
 
     }
+
+
     @Test
     public void getAccountsByAccountNumber() throws Exception {
 
         String accountNum = "232323232";
-        PageRequest paginacao = PageRequest.of(0, 1);
+        PageRequest pageRequest = PageRequest.of(0, 1,
+                Sort.by("valueDate").ascending());
 
-        when(transactionHistoryService.findAllPage(accountNum,paginacao))
+        when(transactionHistoryService.findAllPage(accountNum,pageRequest))
                 .thenReturn(getTransactionHistoryServiceResponse());
 
 
@@ -91,8 +97,8 @@ public class AccountControllerTest {
                         .param("size", "1")
                         .param("sort", "valueDate,asc"))
                 .andExpect(status().isOk())
-//                .andExpect(content().string(containsString(
-//                        "{\"accountNumber\":\"232323232\",\"accountName\":\"SG1122222\",\"accountType\":\"SAVINGS\",\"balanceDate\":\"ssds\",\"currencyType\":\"AUD\",\"openingAvailableBalance\":2.2232322212E8}")))
+                .andExpect(content().string(containsString(
+                        "{\"accountNumber\":\"232323232\",\"accountName\":\"SG1122222\",\"valueDate\":\"sdsds\",\"currencyType\":\"AUD\",\"creditAmount\":\"2222.22\",\"debitAmount\":\"222.44\",\"transactionType\":\"CREDIT\",\"transactionNarrative\":\"test\"}")))
 
                 .andDo(print());
 
@@ -114,7 +120,7 @@ public class AccountControllerTest {
                 .pageSize(1)
                 .totalElements(1)
                 .totalPages(1)
-                .last(false)
+                .last(true)
                 .build();
 
     }
@@ -133,9 +139,9 @@ public class AccountControllerTest {
                 .content(transactionHistoryDTOStream.collect(Collectors.toList()))
                 .pageNo(0)
                 .pageSize(1)
-                .totalElements(1)
+                .totalElements(2)
                 .totalPages(1)
-                .last(false)
+                .last(true)
                 .build();
 
     }

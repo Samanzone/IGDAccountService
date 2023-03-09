@@ -1,16 +1,17 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.0.4'
-//	id 'org.springframework.boot' version '2.2.4.RELEASE'
-	id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+    id 'org.springframework.boot' version '3.0.4'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'jacoco'
 }
+apply plugin: "jacoco"
 
 ext {
-	mapstructVersion = "1.5.3.Final"
- 	lombokVersion = "1.18.20"
-	lombokMapstructBindingVersion = "0.2.0"
-	openapiUiVersion = "1.2.32"
-	springfoxVersion = "3.0.0"
+    mapstructVersion = "1.5.3.Final"
+    lombokVersion = "1.18.20"
+    lombokMapstructBindingVersion = "0.2.0"
+    openapiUiVersion = "1.2.32"
+    springfoxVersion = "3.0.0"
 }
 
 group = 'com.igd'
@@ -19,79 +20,70 @@ sourceCompatibility = '17'
 
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 
 repositories {
-	mavenCentral()
-	mavenLocal()
+    mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-	implementation "org.projectlombok:lombok:${lombokVersion}"
-//	implementation "org.springdoc:springdoc-openapi-ui:${openapiUiVersion}"
-//	implementation "io.springfox:springfox-swagger2:${springfoxVersion}"
-//	implementation "io.springfox:springfox-swagger-ui:${springfoxVersion}"
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0'
-//	implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.4'
-//	implementation 'com.fasterxml.jackson.core:jackson-core:2.9.4'
-//	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.4'
 
-//			<groupId>com.fasterxml.jackson.core</groupId>
-//    <artifactId>jackson-databind</artifactId>
-//	<version>2.9.4</version>
-	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-	annotationProcessor	"org.projectlombok:lombok:${lombokVersion}"
-	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    implementation "org.projectlombok:lombok:${lombokVersion}"
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0'
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
 
 
-//
-//			<dependency>
-//			<groupId>io.springfox</groupId>
-//			<artifactId>springfox-swagger2</artifactId>
-//	<version>2.4.0</version>
-//		</dependency>
-//
-//	<dependency>
-//			<groupId>io.springfox</groupId>
-//			<artifactId>springfox-swagger-ui</artifactId>
-//			<version>2.4.0</version>
-//		</dependency>
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'com.h2database:h2'
 
-//			<dependency>
-//			<groupId>com.h2database</groupId>
-//        <artifactId>h2</artifactId>
-//	<scope>runtime</scope>
-//    </dependency>
-			runtimeOnly 'org.postgresql:postgresql'
-			runtimeOnly 'com.h2database:h2'
-
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-//	testImplementation "org.testng:testng:6.10", "org.easytesting:fest-assert:1.4"
-	testImplementation('org.junit.jupiter:junit-jupiter:5.4.0')
-	testImplementation('org.springframework.boot:spring-boot-starter-test'){
-		exclude group: 'junit', module: 'junit'
-	}
-
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    testImplementation('org.junit.jupiter:junit-jupiter:5.4.0')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'junit', module: 'junit'
+    }
 
 
 }
 
 tasks.withType(JavaCompile) {
-	options.compilerArgs = [
-			'-Amapstruct.suppressGeneratorTimestamp=true'
-	]
+    options.compilerArgs = [
+            '-Amapstruct.suppressGeneratorTimestamp=true'
+    ]
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
+
+jacoco {
+    toolVersion = "0.8.8"
+    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
+jacocoTestReport {
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+}
+
