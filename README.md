@@ -1,8 +1,8 @@
 # IGreenData Account Service
-This Service exposed two RESTful API.
+This Service exposed two RESTful API.Which is build using Java 17
 
 ## Build
-Build the jar and docker image.
+Build the jar and Testing.
 ```
 igd-account-service/docker-db $  docker-compose up -d   
 igd-account-service/docker-db $  cd ..
@@ -13,9 +13,16 @@ igd-account-service $ cd docker-db
 igd-account-service/docker-db $  docker-compose down
 ```
 ## Test Coverage and Test Report
-Test Report --> build/reports/tests/test/index.html
-Test Coverage --> build/jacocoHtml/index.html
 ```
+Test Report --> build/reports/tests/test/index.html 
+
+Test Coverage --> build/jacocoHtml/index.html
+
+```
+
+https://github.com/Samanzone/igd-account-service/blob/main/img/test-coverage.png
+
+https://github.com/Samanzone/igd-account-service/blob/main/img/test-case-summary.png
 
 ## Run
 There is a Docker environment included with this project to run the API with a Postgres DB initialized. Use the below commands to bring up the Docker environment.
