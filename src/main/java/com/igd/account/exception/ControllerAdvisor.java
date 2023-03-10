@@ -42,7 +42,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                                                            final HttpServletRequest request) {
 
         ExceptionResponse error = ExceptionResponse.builder()
-                .errorMessage(exception.getMessage()).requestedURI(request.getRequestURI()).build();
+                .errorMessage("Internal Server Error").requestedURI(request.getRequestURI()).build();
         return error;
     }
 }
