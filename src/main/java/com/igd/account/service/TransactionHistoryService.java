@@ -6,6 +6,7 @@ import com.igd.account.entity.Account;
 import com.igd.account.entity.TransactionHistory;
 import com.igd.account.exception.AccountNotFoundException;
 import com.igd.account.exception.NoDataFoundException;
+import com.igd.account.exception.UserNotExistException;
 import com.igd.account.mapper.TransactionHistoryMapper;
 import com.igd.account.repository.AccountRepository;
 import com.igd.account.repository.TransactionHistoryRepository;
@@ -27,7 +28,7 @@ public class TransactionHistoryService {
     private final AccountRepository accountRepository;
 
 
-    public AccountServiceResponse findAllPage(String accountNumber, Pageable pageable) {
+    public AccountServiceResponse findAllPage(String accountNumber, Pageable pageable)  throws UserNotExistException,NoDataFoundException {
 
         Account account = accountRepository.findByAccountNumber(accountNumber);
 

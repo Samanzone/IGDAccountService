@@ -27,7 +27,7 @@ public class AccountService {
     private final UserRepository userRepository;
 
 
-    public AccountServiceResponse findAllPage(String userId, Pageable pageable) {
+    public AccountServiceResponse findAllPage(String userId, Pageable pageable)  {
 
         User user = userRepository.findByUserId(userId);
 

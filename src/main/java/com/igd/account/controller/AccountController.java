@@ -15,10 +15,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -37,17 +34,14 @@ public class AccountController {
     @Operation(summary = "/v1/user-id/{userId}/accounts", description = "List All Accounts")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
-            @ApiResponse(responseCode = "404", description = "Record not found"),
-            @ApiResponse(responseCode = "1001", description = "Application specific error.")})
+            @ApiResponse(responseCode = "404", description = "Record not found")})
     AccountServiceResponse getAccountByUserId(@PathVariable final String userId,
                                               @PageableDefault(page = 0, size = 20)
                                               @SortDefault.SortDefaults({
                                                       @SortDefault(sort = "accountNumber", direction = Sort.Direction.DESC),
                                                       @SortDefault(sort = "accountName", direction = Sort.Direction.ASC)
                                               })
-                                              Pageable pageable) {
-
-
+                                              @RequestParam(required = false) Pageable pageable) {
         return accountService.findAllPage(userId, pageable);
     }
 
@@ -55,14 +49,13 @@ public class AccountController {
     @Operation(summary = "/v1/accounts/account-num/{accountNum}/transhistory", description = "Particular Account Transaction History")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Successful"),
             @ApiResponse(responseCode = "500", description = "Internal server error"),
-            @ApiResponse(responseCode = "404", description = "Record not found"),
-            @ApiResponse(responseCode = "1001", description = "Application specific error.")})
+            @ApiResponse(responseCode = "404", description = "Record not found")})
     AccountServiceResponse getAccountsByAccountNumber(@PathVariable final String accountNum,
                                                       @PageableDefault(page = 0, size = 20)
                                                       @SortDefault.SortDefaults({
                                                               @SortDefault(sort = "valueDate", direction = Sort.Direction.DESC)
                                                       })
-                                                      Pageable pageable) {
+                                                      @RequestParam(required = false) Pageable pageable) {
         return transactionHistoryService.findAllPage(accountNum, pageable);
 
     }
